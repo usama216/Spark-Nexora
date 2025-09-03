@@ -140,7 +140,7 @@ const ContactSection = () => {
             transition={{ duration: 1, delay: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             viewport={{ once: true }}
           >
-            Ready to transform your digital presence? Let's discuss your project and create something extraordinary together.
+            Ready to transform your digital presence? Let&apos;s discuss your project and create something extraordinary together.
           </motion.p>
         </motion.div>
 
@@ -159,7 +159,7 @@ const ContactSection = () => {
               transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
               viewport={{ once: true }}
             >
-              Let's Start a Conversation
+              Let&apos;s Start a Conversation
             </motion.h3>
             
             <div className="space-y-6 mb-8">

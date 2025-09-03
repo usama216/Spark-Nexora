@@ -137,7 +137,7 @@ const PortfolioSection = () => {
             transition={{ duration: 1, delay: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             viewport={{ once: true }}
           >
-            Discover how we've helped businesses across various industries achieve remarkable growth and success through our digital marketing expertise.
+            Discover how we&apos;ve helped businesses across various industries achieve remarkable growth and success through our digital marketing expertise.
           </motion.p>
         </motion.div>
 
@@ -295,7 +295,7 @@ const PortfolioSection = () => {
                 transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                 viewport={{ once: true }}
               >
-                Let's discuss how we can help your business achieve similar results and drive remarkable growth.
+                Let&apos;s discuss how we can help your business achieve similar results and drive remarkable growth.
               </motion.p>
               <motion.button
                 onClick={() => {

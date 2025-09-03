@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -22,9 +24,11 @@ const Footer = () => {
               onClick={scrollToTop}
               className="flex items-center space-x-3 hover:scale-105 transition-transform duration-300 mb-4"
             >
-              <img 
+              <Image 
                 src="/logo.png" 
                 alt="Spark Nexora Logo" 
+                width={32}
+                height={32}
                 className="h-8 w-8"
               />
               <span className="text-2xl font-bold gradient-text">

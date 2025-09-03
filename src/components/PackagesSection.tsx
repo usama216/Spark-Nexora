@@ -344,7 +344,7 @@ const PackagesSection = () => {
               Need something different?
             </h3>
             <p className="text-gray-600 mb-6 leading-relaxed">
-              All our packages can be customized to fit your specific needs. Contact us to discuss your requirements and we'll create a tailored solution just for you.
+              All our packages can be customized to fit your specific needs. Contact us to discuss your requirements and we&apos;ll create a tailored solution just for you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button

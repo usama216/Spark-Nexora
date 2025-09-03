@@ -126,7 +126,7 @@ const AboutSection = () => {
             transition={{ duration: 1, delay: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             viewport={{ once: true }}
           >
-            We're a team of digital innovators, creative strategists, and technology experts 
+            We&apos;re a team of digital innovators, creative strategists, and technology experts 
             dedicated to transforming businesses through cutting-edge digital solutions.
           </motion.p>
         </motion.div>
@@ -156,7 +156,7 @@ const AboutSection = () => {
               transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
               viewport={{ once: true }}
             >
-              At Spark Nexora, we believe digital marketing is more than ads and algorithms—it's about 
+              At Spark Nexora, we believe digital marketing is more than ads and algorithms—it&apos;s about 
               meaningful connections. Founded with a passion for creativity and technology, our team 
               blends data-driven strategies with compelling storytelling to help brands shine online.
             </motion.p>

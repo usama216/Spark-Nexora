@@ -165,7 +165,7 @@ const TestimonialsSection = () => {
             transition={{ duration: 1, delay: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
             viewport={{ once: true }}
           >
-            Don't just take our word for it. Here's what our clients say about working with us and the results we've achieved together.
+            Don&apos;t just take our word for it. Here&apos;s what our clients say about working with us and the results we&apos;ve achieved together.
           </motion.p>
         </motion.div>
 
@@ -245,7 +245,7 @@ const TestimonialsSection = () => {
 
                   {/* Testimonial Text */}
                   <blockquote className="text-gray-700 mb-6 leading-relaxed italic flex-grow">
-                    "{testimonial.text}"
+                    &ldquo;{testimonial.text}&rdquo;
                   </blockquote>
 
                   {/* Results */}
@@ -327,7 +327,7 @@ const TestimonialsSection = () => {
                 transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                 viewport={{ once: true }}
               >
-                Let's discuss how we can help your business achieve similar results and become our next success story.
+                Let&apos;s discuss how we can help your business achieve similar results and become our next success story.
               </motion.p>
               <motion.button
                 onClick={() => {

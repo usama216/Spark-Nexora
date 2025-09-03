@@ -245,7 +245,7 @@ const ServicesSection = () => {
                 transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                 viewport={{ once: true }}
               >
-                Let's discuss how our comprehensive digital marketing services can drive growth and success for your business.
+                Let&apos;s discuss how our comprehensive digital marketing services can drive growth and success for your business.
               </motion.p>
               <motion.button
                 onClick={() => {
