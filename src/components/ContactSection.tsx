@@ -187,23 +187,7 @@ const ContactSection = () => {
               ))}
             </div>
 
-            {/* Quick Stats */}
-            <motion.div 
-              className="grid grid-cols-2 gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-              viewport={{ once: true }}
-            >
-              <div className="text-center p-4 card-modern">
-                <div className="text-2xl font-bold text-primary-600 mb-1">24h</div>
-                <div className="text-sm text-gray-600">Response Time</div>
-              </div>
-              <div className="text-center p-4 card-modern">
-                <div className="text-2xl font-bold text-primary-600 mb-1">500+</div>
-                <div className="text-sm text-gray-600">Projects Done</div>
-              </div>
-            </motion.div>
+         
           </motion.div>
 
           {/* Contact Form */}

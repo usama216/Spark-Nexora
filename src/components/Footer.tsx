@@ -15,7 +15,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gray-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -29,7 +29,7 @@ const Footer = () => {
                 alt="Spark Nexora Logo" 
                 width={32}
                 height={32}
-                className="h-8 w-8"
+                className="h-16 w-16"
               />
               <span className="text-2xl font-bold gradient-text">
                 Spark Nexora

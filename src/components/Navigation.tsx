@@ -31,7 +31,7 @@ const Navigation = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-14">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <motion.div 
@@ -39,13 +39,13 @@ const Navigation = () => {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
+
+                        <div className="w-12 h-12">
+           <img src='/logo.png'/>
+            
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900 text-modern">Spark Nexora</h1>
+              <h1 className="text-xl font-bold text-[#006287] text-modern">Spark Nexora</h1>
               <p className="text-xs text-gray-500">Digital Innovation</p>
             </div>
           </motion.div>

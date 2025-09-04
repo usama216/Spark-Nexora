@@ -170,7 +170,7 @@ const TestimonialsSection = () => {
         </motion.div>
 
         {/* Stats Section */}
-        <motion.div 
+        {/* <motion.div 
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -192,7 +192,7 @@ const TestimonialsSection = () => {
               <div className="text-gray-600 font-medium">{stat.label}</div>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.div> */}
 
         {/* Testimonials Carousel */}
         <div className="relative">
