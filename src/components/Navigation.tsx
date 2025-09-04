@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Image from 'next/image';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,7 +42,13 @@ const Navigation = () => {
           >
 
                         <div className="w-12 h-12">
-           <img src='/logo.png'/>
+           <Image 
+             src='/logo.png' 
+             alt='Spark Nexora Logo'
+             width={48}
+             height={48}
+             className="w-full h-full object-contain"
+           />
             
             </div>
             <div>
