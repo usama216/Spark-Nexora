@@ -18,7 +18,12 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section 
+      id="home" 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      role="banner"
+      aria-label="Hero Section - Spark Nexora Digital Marketing Agency"
+    >
       {/* Animated Background */}
       <motion.div 
         className="absolute inset-0 animated-bg"
@@ -115,6 +120,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+              itemProp="name"
             >
               Spark Nexora
             </motion.h1>
@@ -135,6 +141,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+              itemProp="description"
             >
               At Spark Nexora, we transform businesses into digital powerhouses. Whether you're a startup finding your voice or an established brand aiming for growth, we craft strategies that ignite engagement, boost visibility, and drive real results.
             </motion.p>
@@ -175,20 +182,21 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
-            <motion.button
-            onClick={scrollToContact}
-            className="bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-bold py-4 px-8 rounded-lg text-md transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-primary-500/25"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 20px 40px rgba(0, 80, 115, 0.3)"
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get Started Today
-          </motion.button>
+                         <motion.button
+             onClick={scrollToContact}
+             className="bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white font-bold py-4 px-8 rounded-lg text-md transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-primary-500/25"
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 1, delay: 1.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+             whileHover={{ 
+               scale: 1.05,
+               boxShadow: "0 20px 40px rgba(0, 80, 115, 0.3)"
+             }}
+             whileTap={{ scale: 0.95 }}
+             aria-label="Get Started Today - Contact Spark Nexora"
+           >
+             Get Started Today
+           </motion.button>
             </motion.div>
           </motion.div>
         </div>
