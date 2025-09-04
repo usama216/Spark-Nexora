@@ -6,7 +6,7 @@ interface SEOProps {
   keywords?: string[]
   image?: string
   url?: string
-  type?: 'website' | 'article' | 'product'
+  type?: 'website' | 'article'
   publishedTime?: string
   modifiedTime?: string
   author?: string
@@ -49,7 +49,7 @@ export function generateMetadata({
     'business growth'
   ]
 
-  const allKeywords = [...new Set([...defaultKeywords, ...keywords])]
+  const allKeywords = Array.from(new Set([...defaultKeywords, ...keywords]))
 
   const metadata: Metadata = {
     title: fullTitle,
@@ -63,7 +63,7 @@ export function generateMetadata({
       canonical: fullUrl,
     },
     openGraph: {
-      type,
+      type: type as 'website' | 'article',
       locale: 'en_US',
       url: fullUrl,
       siteName,
@@ -118,7 +118,7 @@ export function generateStructuredData({
   modifiedTime,
   organization = true
 }: {
-  type?: 'WebPage' | 'Article' | 'Product' | 'Service'
+  type?: 'WebPage' | 'Article' | 'Service'
   title?: string
   description?: string
   url?: string
