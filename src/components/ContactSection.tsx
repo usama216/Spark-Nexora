@@ -41,6 +41,23 @@ const ContactSection = () => {
     }, 2000);
   };
 
+  const handlePhoneClick = () => {
+    window.open('tel:+923084577766', '_self');
+  };
+
+  const handleEmailClick = () => {
+    const email = 'sparknexora@gmail.com';
+    const subject = 'Inquiry from Website';
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}`;
+    window.open(gmailUrl, '_blank');
+  };
+
+  const handleLocationClick = () => {
+    const address = 'Street 11, Phase AGOCHS, Islamabad, Pakistan';
+    const encodedAddress = encodeURIComponent(address);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
+  };
+
   const contactInfo = [
     {
       icon: (
@@ -51,7 +68,8 @@ const ContactSection = () => {
       ),
       title: 'Office Address',
       details: 'Street 11, Phase AGOCHS, Islamabad, Pakistan',
-      action: 'Get Directions'
+      action: 'Get Directions',
+      onClick: handleLocationClick
     },
     {
       icon: (
@@ -61,7 +79,8 @@ const ContactSection = () => {
       ),
       title: 'Phone Number',
       details: '+92 308 4577766',
-      action: 'Call Now'
+      action: 'Call Now',
+      onClick: handlePhoneClick
     },
     {
       icon: (
@@ -71,7 +90,8 @@ const ContactSection = () => {
       ),
       title: 'Email Address',
       details: 'sparknexora@gmail.com',
-      action: 'Send Email'
+      action: 'Send Email',
+      onClick: handleEmailClick
     }
   ];
 
@@ -144,7 +164,7 @@ const ContactSection = () => {
           </motion.p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -179,8 +199,11 @@ const ContactSection = () => {
                   <div className="flex-1">
                     <h4 className="text-lg font-semibold text-gray-900 mb-2">{info.title}</h4>
                     <p className="text-gray-600 mb-3">{info.details}</p>
-                    <button className="text-primary-600 hover:text-primary-700 font-medium text-sm transition-colors duration-300">
-                      {info.action} →
+                    <button 
+                      onClick={info.onClick}
+                      className="text-primary-600 hover:text-primary-700 font-medium text-sm transition-colors duration-300 cursor-pointer"
+                    >
+                      {info.action} 
                     </button>
                   </div>
                 </motion.div>
@@ -321,10 +344,10 @@ const ContactSection = () => {
                       </>
                     ) : (
                       <>
-                        <span>Send Message</span>
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span>Send Message →</span>
+                        {/* <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
+                        </svg> */}
                       </>
                     )}
                   </span>
