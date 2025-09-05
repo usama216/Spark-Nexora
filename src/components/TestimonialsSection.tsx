@@ -228,7 +228,7 @@ const TestimonialsSection = () => {
           >
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={testimonial.id}>
-                <div className="h-96 p-8 card-modern flex flex-col">
+                <div className="min-h-96 p-8 card-modern flex flex-col">
                   {/* Rating */}
                   <div className="flex items-center mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
@@ -265,13 +265,13 @@ const TestimonialsSection = () => {
 
                   {/* Client Info */}
                   <div className="flex items-center mt-auto">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4 flex-shrink-0">
                       {testimonial.name.split(' ').map(n => n[0]).join('')}
                     </div>
-                    <div>
-                      <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                      <div className="text-sm text-gray-600">{testimonial.role}</div>
-                      <div className="text-sm text-primary-600 font-medium">{testimonial.company}</div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-semibold text-gray-900 truncate">{testimonial.name}</div>
+                      <div className="text-sm text-gray-600 truncate">{testimonial.role}</div>
+                      <div className="text-sm text-primary-600 font-medium truncate">{testimonial.company}</div>
                     </div>
                   </div>
 

@@ -8,11 +8,26 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    // Close mobile menu first
     setIsMenuOpen(false);
+    
+    // Small delay to ensure menu closes before scrolling
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        // Get the navbar height to offset the scroll position
+        const navbar = document.querySelector('nav');
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+        
+        // Calculate the position to scroll to (accounting for navbar height)
+        const elementPosition = element.offsetTop - navbarHeight - 20; // 20px extra padding
+        
+        window.scrollTo({
+          top: elementPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
   };
 
   const navItems = [
@@ -32,7 +47,7 @@ const Navigation = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <div className="container mx-auto px-14">
+      <div className="container mx-auto px-4 lg:px-14">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <motion.button 
@@ -109,7 +124,7 @@ const Navigation = () => {
 
         {/* Mobile Menu */}
         <motion.div
-          className={`lg:hidden overflow-hidden ${isMenuOpen ? 'max-h-96' : 'max-h-0'}`}
+          className={`lg:hidden overflow-hidden ${isMenuOpen ? 'max-h-full' : 'max-h-0'}`}
           initial={false}
           animate={{ 
             height: isMenuOpen ? 'auto' : 0,
