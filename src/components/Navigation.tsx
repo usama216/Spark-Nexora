@@ -35,27 +35,27 @@ const Navigation = () => {
       <div className="container mx-auto px-14">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <motion.div 
-            className="flex items-center space-x-3"
+          <motion.button 
+            className="flex items-center space-x-3 cursor-pointer"
+            onClick={() => scrollToSection('home')}
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-
-                        <div className="w-12 h-12">
-           <Image 
-             src='/logo.png' 
-             alt='Spark Nexora Logo'
-             width={48}
-             height={48}
-             className="w-full h-full object-contain"
-           />
-            
+            <div className="w-12 h-12">
+              <Image 
+                src='/logo.png' 
+                alt='Spark Nexora Logo'
+                width={48}
+                height={48}
+                className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold text-[#006287] text-modern">Spark Nexora</h1>
               <p className="text-xs text-gray-500">Digital Innovation</p>
             </div>
-          </motion.div>
+          </motion.button>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
