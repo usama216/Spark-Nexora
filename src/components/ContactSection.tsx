@@ -107,29 +107,53 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="px-1 lg:px-16 py-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
-      {/* Background Elements */}
+    <section id="contact" className="relative px-24 py-24 bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden">
+      {/* Brand Color Background Effects */}
       <div className="absolute inset-0">
+        {/* Subtle Pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,80,115,0.05)_0%,transparent_50%)]"></div>
+        
+        {/* Floating Brand Elements */}
         <motion.div 
-          className="absolute top-20 left-10 w-64 h-64 bg-primary-50 rounded-full opacity-20"
+          className="absolute top-20 right-20 w-72 h-72 bg-gradient-to-br from-primary-100/30 to-primary-200/30 rounded-full blur-3xl"
           animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.3, 0.2]
+            x: [0, 30, 0],
+            y: [0, -20, 0],
+            scale: [1, 1.1, 1]
           }}
-          transition={{ duration: 15, repeat: Infinity, ease: [0.4, 0, 0.6, 1], repeatType: "reverse" }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div 
-          className="absolute bottom-20 right-10 w-48 h-48 bg-secondary-50 rounded-full opacity-15"
+          className="absolute bottom-20 left-20 w-64 h-64 bg-gradient-to-br from-secondary-100/30 to-secondary-200/30 rounded-full blur-3xl"
           animate={{ 
-            scale: [1.2, 1, 1.2],
-            opacity: [0.15, 0.25, 0.15]
+            x: [0, -25, 0],
+            y: [0, 25, 0],
+            scale: [1, 1.15, 1]
           }}
-          transition={{ duration: 18, repeat: Infinity, ease: [0.4, 0, 0.6, 1], repeatType: "reverse" }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        {/* Brand Color Accents */}
+        <motion.div 
+          className="absolute top-1/3 left-1/4 w-2 h-2 bg-primary-500 rounded-full"
+          animate={{ 
+            y: [0, -15, 0],
+            opacity: [0.6, 1, 0.6]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-secondary-500 rounded-full"
+          animate={{ 
+            y: [0, -10, 0],
+            opacity: [0.5, 0.9, 0.5]
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Section Header */}
+        {/* Modern Header with Brand Colors */}
         <motion.div 
           className="text-center mb-20"
           initial={{ opacity: 0, y: 30 }}
@@ -137,102 +161,119 @@ const ContactSection = () => {
           transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
           viewport={{ once: true }}
         >
-          <motion.h2 
-            className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 text-modern"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-            viewport={{ once: true }}
-          >
-            Get In <span className="gradient-text">Touch</span>
-          </motion.h2>
           <motion.div 
-            className="w-32 h-1 bg-gradient-to-r from-primary-500 to-primary-600 mx-auto rounded-full mb-8"
-            initial={{ width: 0 }}
-            whileInView={{ width: 128 }}
-            transition={{ duration: 1.5, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="inline-flex items-center space-x-2 px-4 py-2 bg-primary-100 rounded-full border border-primary-200 mb-6"
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-          />
-          <motion.p 
-            className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+            <span className="text-primary-700 font-semibold text-sm">GET IN TOUCH</span>
+          </motion.div>
+          
+          <motion.h2 
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             viewport={{ once: true }}
           >
-            Ready to transform your digital presence? Let&apos;s discuss your project and create something extraordinary together.
+            Let's Create Something{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
+              Amazing
+            </span>
+          </motion.h2>
+          
+          <motion.p 
+            className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            viewport={{ once: true }}
+          >
+            Ready to take your business to the next level? We're here to help you achieve your digital goals with innovative solutions.
           </motion.p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Contact Information */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            viewport={{ once: true }}
-          >
-            <motion.h3 
-              className="text-3xl font-bold text-gray-900 mb-8 text-modern"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-              viewport={{ once: true }}
-            >
-              Let&apos;s Start a Conversation
-            </motion.h3>
-            
-            <div className="space-y-6 mb-8">
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-start space-x-4 p-6 card-modern group"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 + index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                >
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
-                    {info.icon}
+        <div className="grid lg:grid-cols-3 gap-12">
+          {/* Contact Information Cards with Brand Colors */}
+          <div className="lg:col-span-1 space-y-6">
+            {contactInfo.map((info, index) => (
+              <motion.div
+                key={index}
+                className="group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 + index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                viewport={{ once: true }}
+                whileHover={{ y: -5 }}
+              >
+                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 group-hover:shadow-xl group-hover:border-primary-200 transition-all duration-300">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                      {info.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors duration-300">
+                        {info.title}
+                      </h4>
+                      <p className="text-gray-600 mb-3 text-sm leading-relaxed">
+                        {info.details}
+                      </p>
+                      <button 
+                        onClick={info.onClick}
+                        className="text-primary-600 hover:text-primary-700 font-semibold text-sm transition-colors duration-300 flex items-center space-x-1 group-hover:translate-x-1"
+                      >
+                        <span>{info.action}</span>
+                        <svg className="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">{info.title}</h4>
-                    <p className="text-gray-600 mb-3">{info.details}</p>
-                    <button 
-                      onClick={info.onClick}
-                      className="text-primary-600 hover:text-primary-700 font-medium text-sm transition-colors duration-300 cursor-pointer"
-                    >
-                      {info.action} 
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
 
-         
-          </motion.div>
-
-          {/* Contact Form */}
+          {/* Modern Contact Form with Brand Colors */}
           <motion.div
+            className="lg:col-span-2"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
             viewport={{ once: true }}
           >
             <motion.div 
-              className="p-8 card-modern"
-              whileHover={{ y: -5, scale: 1.02 }}
+              className="p-8 bg-white rounded-3xl shadow-xl border border-gray-100"
+              whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-modern">Send us a Message</h3>
+              <motion.div 
+                className="mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                  Send us a <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">Message</span>
+                </h3>
+                <p className="text-gray-600 text-lg">
+                  Fill out the form below and we'll get back to you within 24 hours.
+                </p>
+              </motion.div>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Floating Label Inputs */}
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Full Name *
-                    </label>
+                  <motion.div 
+                    className="relative group"
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <input
                       type="text"
                       id="name"
@@ -240,14 +281,27 @@ const ContactSection = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
-                      placeholder="Your full name"
+                      className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300"
+                      placeholder=" "
                     />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email Address *
+                    <label 
+                      htmlFor="name" 
+                      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                    >
+                      Full Name *
                     </label>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-0">
+                      <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="relative group"
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <input
                       type="email"
                       id="email"
@@ -255,113 +309,221 @@ const ContactSection = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
-                      placeholder="your@email.com"
+                      className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300"
+                      placeholder=" "
                     />
-                  </div>
+                    <label 
+                      htmlFor="email" 
+                      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                    >
+                      Email Address *
+                    </label>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-0">
+                      <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </motion.div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone Number
-                    </label>
+                  <motion.div 
+                    className="relative group"
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
-                      placeholder="+92 300 1234567"
+                      className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300"
+                      placeholder=" "
                     />
-                  </div>
-                  <div>
-                    <label htmlFor="company" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Company Name
+                    <label 
+                      htmlFor="phone" 
+                      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                    >
+                      Phone Number
                     </label>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-0">
+                      <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="relative group"
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <input
                       type="text"
                       id="company"
                       name="company"
                       value={formData.company}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
-                      placeholder="Your company"
+                      className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300"
+                      placeholder=" "
                     />
+                    <label 
+                      htmlFor="company" 
+                      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                    >
+                      Company Name
+                    </label>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-0">
+                      <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                    </div>
+                  </motion.div>
+                </div>
+
+                <motion.div 
+                  className="relative group"
+                  whileHover={{ y: -2 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="relative">
+                    <select
+                      id="service"
+                      name="service"
+                      value={formData.service}
+                      onChange={handleInputChange}
+                      className="peer w-full px-0 pt-6 pb-2 pr-8 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300 cursor-pointer"
+                    >
+                      <option value="" disabled> </option>
+                      {services.map((service, index) => (
+                        <option key={index} value={service} className="py-2 px-4 text-gray-900 bg-white hover:bg-primary-50">
+                          {service}
+                        </option>
+                      ))}
+                    </select>
+                    <label 
+                      htmlFor="service" 
+                      className={`absolute text-sm duration-300 transform origin-[0] left-0 z-10 transition-all duration-300 ${
+                        formData.service 
+                          ? '-translate-y-4 scale-75 text-primary-500' 
+                          : 'top-4 scale-100 translate-y-0 text-gray-500 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-primary-500'
+                      }`}
+                    >
+                      Service Interested In
+                    </label>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-0 pointer-events-none">
+                      <motion.svg 
+                        className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                        animate={{ rotate: formData.service ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </motion.svg>
+                    </div>
+                    
+                    {/* Custom Dropdown Overlay for Better Styling */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary-500 to-transparent opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
+                    </div>
                   </div>
-                </div>
+                  
+                  {/* Service Preview Card */}
+                  {formData.service && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="mt-3 p-3 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-lg border border-primary-200"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+                        <span className="text-sm font-medium text-gray-700">Selected: {formData.service}</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
 
-                <div>
-                  <label htmlFor="service" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Service Interested In
-                  </label>
-                  <select
-                    id="service"
-                    name="service"
-                    value={formData.service}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
-                  >
-                    <option value="">Select a service</option>
-                    {services.map((service, index) => (
-                      <option key={index} value={service}>{service}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Message *
-                  </label>
+                <motion.div 
+                  className="relative group"
+                  whileHover={{ y: -2 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
                     required
-                    rows={5}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 resize-none"
-                    placeholder="Tell us about your project and how we can help..."
+                    rows={4}
+                    className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300 resize-none"
+                    placeholder=" "
                   />
-                </div>
+                  <label 
+                    htmlFor="message" 
+                    className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                  >
+                    Tell us about your project *
+                  </label>
+                  <div className="absolute top-4 right-0">
+                    <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  </div>
+                </motion.div>
 
                 <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-gradient-to-r from-primary-500 via-primary-600 to-secondary-500 hover:from-primary-600 hover:via-primary-700 hover:to-secondary-600 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-500 relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xl hover:shadow-primary-500/25"
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
+                  }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <span className="relative z-10 flex items-center justify-center space-x-2">
+                  <span className="relative z-10 flex items-center justify-center space-x-3 text-base">
                     {isSubmitting ? (
                       <>
-                        <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                        <motion.svg 
+                          className="w-5 h-5" 
+                          fill="none" 
+                          viewBox="0 0 24 24"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        >
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span>Sending...</span>
+                        </motion.svg>
+                        <span>Sending Message...</span>
                       </>
                     ) : (
                       <>
-                        <span>Send Message →</span>
-                        {/* <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg> */}
+                        <span>Send Message</span>
+                        
                       </>
                     )}
                   </span>
 
                   {!isSubmitting && (
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0"
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0"
                       whileHover={{
-                        opacity: 0.2,
+                        opacity: 1,
                         x: ['-100%', '100%']
                       }}
-                      transition={{ duration: 0.6 }}
+                      transition={{ duration: 0.8 }}
                     />
                   )}
+
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-primary-400/20 to-secondary-400/20 opacity-0"
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
                 </motion.button>
               </form>
             </motion.div>

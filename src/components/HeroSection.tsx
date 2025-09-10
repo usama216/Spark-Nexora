@@ -48,7 +48,7 @@ const HeroSection = () => {
           className="absolute inset-0 overflow-hidden"
           initial={{ opacity: 0, scale: 1.1, rotate: 1 }}
           animate={{ 
-            opacity: 0.3, 
+            opacity: 0.9, 
             scale: 1,
             rotate: 0
           }}
