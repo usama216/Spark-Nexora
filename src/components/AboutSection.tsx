@@ -95,9 +95,10 @@ const AboutSection = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
+
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-16 lg:mb-20"
+          className="text-center mb-16 lg:mb-20 relative z-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}

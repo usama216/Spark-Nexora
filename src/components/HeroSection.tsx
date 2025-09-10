@@ -41,8 +41,142 @@ const HeroSection = () => {
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       ></motion.div>
       
-      {/* Geometric Background Elements */}
+      {/* Modern Background Images */}
       <div className="absolute inset-0">
+        {/* Enhanced Main Background Image */}
+        <motion.div 
+          className="absolute inset-0 overflow-hidden"
+          initial={{ opacity: 0, scale: 1.1, rotate: 1 }}
+          animate={{ 
+            opacity: 0.3, 
+            scale: 1,
+            rotate: 0
+          }}
+          transition={{ 
+            duration: 3, 
+            ease: [0.25, 0.46, 0.45, 0.94],
+            scale: { duration: 4, ease: "easeOut" }
+          }}
+        >
+          <img
+            src="/Home/pexels-souvenirpixels-1519088.jpg"
+            alt="Modern Business Background"
+            className="w-full h-full object-cover object-center"
+            loading="eager"
+          />
+          
+          {/* Dynamic Overlay Effects */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/50 via-primary-800/30 to-primary-900/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-600/15 to-transparent"></div>
+          
+          {/* Animated Light Rays */}
+          <motion.div 
+            className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/25 to-transparent"
+            animate={{ 
+              opacity: [0, 1, 0],
+              scaleY: [0.5, 1, 0.5]
+            }}
+            transition={{ 
+              duration: 4, 
+              repeat: Infinity, 
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+          <motion.div 
+            className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent"
+            animate={{ 
+              opacity: [0, 1, 0],
+              scaleY: [0.3, 1, 0.3]
+            }}
+            transition={{ 
+              duration: 5, 
+              repeat: Infinity, 
+              ease: "easeInOut",
+              delay: 2.5
+            }}
+          />
+          <motion.div 
+            className="absolute top-0 left-2/3 w-px h-full bg-gradient-to-b from-transparent via-white/15 to-transparent"
+            animate={{ 
+              opacity: [0, 1, 0],
+              scaleY: [0.4, 1, 0.4]
+            }}
+            transition={{ 
+              duration: 6, 
+              repeat: Infinity, 
+              ease: "easeInOut",
+              delay: 4
+            }}
+          />
+          
+          {/* Floating Light Orbs */}
+          <motion.div 
+            className="absolute top-1/4 left-1/3 w-3 h-3 bg-white/40 rounded-full blur-sm"
+            animate={{ 
+              x: [0, 60, 0],
+              y: [0, -40, 0],
+              opacity: [0.4, 0.9, 0.4],
+              scale: [1, 1.8, 1]
+            }}
+            transition={{ 
+              duration: 8, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-white/30 rounded-full blur-sm"
+            animate={{ 
+              x: [0, -50, 0],
+              y: [0, 30, 0],
+              opacity: [0.3, 0.7, 0.3],
+              scale: [1, 1.5, 1]
+            }}
+            transition={{ 
+              duration: 9, 
+              repeat: Infinity, 
+              ease: "easeInOut",
+              delay: 3
+            }}
+          />
+          <motion.div 
+            className="absolute top-1/2 right-1/2 w-2.5 h-2.5 bg-white/35 rounded-full blur-sm"
+            animate={{ 
+              x: [0, 40, 0],
+              y: [0, -25, 0],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.6, 1]
+            }}
+            transition={{ 
+              duration: 7, 
+              repeat: Infinity, 
+              ease: "easeInOut",
+              delay: 1.5
+            }}
+          />
+          
+          {/* Subtle Parallax Effect */}
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent"
+            animate={{ 
+              x: [0, 20, 0],
+              y: [0, -10, 0]
+            }}
+            transition={{ 
+              duration: 12, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+          />
+        </motion.div>
+        
+        {/* Overlay Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/80 via-primary-800/70 to-primary-900/80"></div>
+        
+        
+        {/* Geometric Elements */}
         <motion.div 
           className="absolute top-20 left-10 w-32 h-32 border-2 border-white/20 rounded-full"
           animate={{ 
@@ -52,28 +186,12 @@ const HeroSection = () => {
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         />
         <motion.div 
-          className="absolute top-40 right-20 w-24 h-24 border-2 border-white/20 rounded-lg"
-          animate={{ 
-            rotate: [360, 0],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div 
-          className="absolute bottom-20 left-1/4 w-40 h-40 border-2 border-white/20 rounded-full"
-          animate={{ 
-            rotate: [0, -360],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div 
-          className="absolute bottom-40 right-1/3 w-16 h-16 border-2 border-white/20 rounded-lg"
+          className="absolute bottom-40 right-1/3 w-16 h-16 border-2 border-white/25 rounded-lg"
           animate={{ 
             rotate: [360, 0],
             scale: [1, 1.3, 1]
           }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
         />
       </div>
 
