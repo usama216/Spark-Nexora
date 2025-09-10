@@ -16,7 +16,8 @@ const PortfolioSection = () => {
       duration: '6 months',
       industry: 'Fashion & Retail',
       color: 'from-primary-500 to-primary-600',
-      bgColor: 'from-primary-50 to-primary-100'
+      bgColor: 'from-primary-50 to-primary-100',
+      image: '/Portfolio/pexels-a-darmel-7710082.jpg'
     },
     {
       id: 2,
@@ -27,7 +28,8 @@ const PortfolioSection = () => {
       duration: '4 months',
       industry: 'Technology',
       color: 'from-secondary-500 to-secondary-600',
-      bgColor: 'from-secondary-50 to-secondary-100'
+      bgColor: 'from-secondary-50 to-secondary-100',
+      image: '/Portfolio/pexels-anna-nekrashevich-6802042.jpg'
     },
     {
       id: 3,
@@ -38,18 +40,8 @@ const PortfolioSection = () => {
       duration: '3 months',
       industry: 'Food & Beverage',
       color: 'from-primary-400 to-secondary-500',
-      bgColor: 'from-primary-50 to-secondary-50'
-    },
-    {
-      id: 4,
-      title: 'Educational Platform',
-      description: 'Achieved top Google rankings for competitive keywords and increased organic traffic by 400%. Implemented technical SEO and content marketing strategies.',
-      result: 'Top Google Rankings',
-      metrics: ['400% Organic Traffic', 'Top 3 Rankings', '250% Lead Generation'],
-      duration: '8 months',
-      industry: 'Education',
-      color: 'from-secondary-400 to-primary-500',
-      bgColor: 'from-secondary-50 to-primary-50'
+      bgColor: 'from-primary-50 to-secondary-50',
+      image: '/Portfolio/pexels-tima-miroshnichenko-7567591.jpg'
     }
   ];
 
@@ -57,8 +49,7 @@ const PortfolioSection = () => {
     { id: 0, name: 'All Case Studies' },
     { id: 1, name: 'E-Commerce' },
     { id: 2, name: 'Startups' },
-    { id: 3, name: 'Local Business' },
-    { id: 4, name: 'Education' }
+    { id: 3, name: 'Local Business' }
   ];
 
   const getFilteredCaseStudies = () => {
@@ -223,53 +214,64 @@ const PortfolioSection = () => {
                   </div>
                 </div>
 
-                {/* Visual Side - More Compact */}
+                {/* Visual Side - Portfolio Image */}
                 <div className="w-full lg:flex-1">
                   <motion.div
-                    className={`relative h-64 lg:h-72 bg-gradient-to-br ${item.bgColor} rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500`}
+                    className="relative h-80 lg:h-96 rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500"
                     whileHover={{ scale: 1.03 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    {/* Decorative Elements */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
-                    <div className={`absolute top-6 right-6 w-20 h-20 bg-gradient-to-r ${item.color} rounded-full opacity-20 group-hover:scale-110 transition-transform duration-300`}></div>
-                    <div className={`absolute bottom-6 left-6 w-12 h-12 bg-gradient-to-r ${item.color} rounded-full opacity-30 group-hover:scale-110 transition-transform duration-300`}></div>
-                    
-                    {/* Center Content */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center space-y-3">
-                        <div className={`w-20 h-20 bg-gradient-to-r ${item.color} rounded-2xl flex items-center justify-center text-white mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                          <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        </div>
-                        <div className="space-y-1">
-                          <h4 className="text-xl font-bold text-gray-800 text-modern">
-                            {item.result}
-                          </h4>
-                          <p className="text-gray-600 font-medium text-sm">
-                            Success Story
-                          </p>
+                    {/* Portfolio Image */}
+                    <div className="relative w-full h-full">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                      {/* Overlay Gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      
+                      {/* Image Loading Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary-100 to-secondary-100 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                      
+                      {/* Success Badge Overlay */}
+                      <div className="absolute top-4 right-4">
+                        <div className={`px-4 py-2 bg-gradient-to-r ${item.color} text-white rounded-full text-sm font-bold shadow-lg transform translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500`}>
+                          {item.result}
                         </div>
                       </div>
-                    </div>
 
-                    {/* Floating Elements */}
-                    <motion.div
-                      className="absolute top-3 left-3 w-2 h-2 bg-white rounded-full opacity-60"
-                      animate={{ y: [0, -8, 0] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
-                    />
-                    <motion.div
-                      className="absolute top-8 right-8 w-1.5 h-1.5 bg-white rounded-full opacity-40"
-                      animate={{ y: [0, -6, 0] }}
-                      transition={{ duration: 2.5, repeat: Infinity, delay: index * 0.3 }}
-                    />
-                    <motion.div
-                      className="absolute bottom-12 right-4 w-3 h-3 bg-white rounded-full opacity-50"
-                      animate={{ y: [0, -4, 0] }}
-                      transition={{ duration: 3, repeat: Infinity, delay: index * 0.7 }}
-                    />
+                      {/* Industry Tag */}
+                      <div className="absolute bottom-4 left-4">
+                        <div className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 rounded-full text-xs font-medium transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                          {item.industry}
+                        </div>
+                      </div>
+
+                      {/* Hover Content */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <div className="text-center space-y-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-200">
+                          <div className={`w-16 h-16 bg-gradient-to-r ${item.color} rounded-2xl flex items-center justify-center text-white mx-auto shadow-2xl`}>
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div className="space-y-1">
+                            <h4 className="text-xl font-bold text-white text-modern">
+                              Success Story
+                            </h4>
+                            <p className="text-white/90 font-medium text-sm">
+                              View Details
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Decorative Elements */}
+                      <div className={`absolute top-6 left-6 w-3 h-3 bg-gradient-to-r ${item.color} rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-500 delay-300`}></div>
+                      <div className={`absolute bottom-6 right-6 w-2 h-2 bg-gradient-to-r ${item.color} rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-500 delay-400`}></div>
+                    </div>
                   </motion.div>
                 </div>
               </div>

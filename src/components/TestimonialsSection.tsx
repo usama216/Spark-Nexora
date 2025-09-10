@@ -12,63 +12,63 @@ const TestimonialsSection = () => {
   const testimonials = [
     {
       id: 1,
-      name: 'Ayesha Khan',
-      role: 'Boutique Owner',
-      company: 'Fashion Forward',
-      image: '/api/placeholder/80/80',
+      name: 'Sarah Johnson',
+      role: 'CEO & Founder',
+      company: 'EcoFashion Co.',
+      image: '/Testimonials/pexels-edmond-dantes-4347368.jpg',
       rating: 5,
-      text: 'Spark Nexora took our small business and gave it a big voice online. Our sales skyrocketed within months!',
-      results: ['300% Sales Increase', '500% Social Growth', '150% Website Traffic']
+      text: 'Spark Nexora transformed our brand from a small startup to a recognized name in sustainable fashion. Their digital strategy was game-changing!',
+      results: ['400% Brand Growth', '250% Online Sales', '180% Social Engagement']
     },
     {
       id: 2,
-      name: 'Daniel Lewis',
-      role: 'Startup Founder',
-      company: 'TechInnovate',
-      image: '/api/placeholder/80/80',
+      name: 'Michael Chen',
+      role: 'Marketing Director',
+      company: 'TechFlow Solutions',
+      image: '/Testimonials/pexels-kampus-5920774.jpg',
       rating: 5,
-      text: 'The team\'s creativity and data-driven approach helped us reach new audiences we never thought possible.',
-      results: ['5K+ Monthly Leads', '200% Brand Awareness', '95% Client Satisfaction']
+      text: 'The team\'s expertise in digital marketing helped us achieve unprecedented growth. Their data-driven approach delivered results we never imagined.',
+      results: ['500% Lead Generation', '300% Website Traffic', '95% Conversion Rate']
     },
     {
       id: 3,
-      name: 'Maria Ahmed',
-      role: 'Marketing Head',
-      company: 'Global Solutions',
-      image: '/api/placeholder/80/80',
+      name: 'Emily Rodriguez',
+      role: 'Business Owner',
+      company: 'Local Bistro Chain',
+      image: '/Testimonials/pexels-kooldark-14438785.jpg',
       rating: 5,
-      text: 'Professional, reliable, and results-oriented. Spark Nexora is our go-to digital partner.',
-      results: ['400% ROI', '250% Lead Generation', '100% Project Success']
+      text: 'Working with Spark Nexora was the best business decision we made. They understood our local market and delivered exceptional results.',
+      results: ['350% Local Reach', '200% Customer Retention', '150% Revenue Growth']
     },
-    {
+     {
       id: 4,
-      name: 'Ayesha Khan',
-      role: 'Boutique Owner',
-      company: 'Fashion Forward',
-      image: '/api/placeholder/80/80',
+      name: 'Sarah Johnson',
+      role: 'CEO & Founder',
+      company: 'EcoFashion Co.',
+      image: '/Testimonials/pexels-edmond-dantes-4347368.jpg',
       rating: 5,
-      text: 'Spark Nexora took our small business and gave it a big voice online. Our sales skyrocketed within months!',
-      results: ['300% Sales Increase', '500% Social Growth', '150% Website Traffic']
+      text: 'Spark Nexora transformed our brand from a small startup to a recognized name in sustainable fashion. Their digital strategy was game-changing!',
+      results: ['400% Brand Growth', '250% Online Sales', '180% Social Engagement']
     },
     {
       id: 5,
-      name: 'Daniel Lewis',
-      role: 'Startup Founder',
-      company: 'TechInnovate',
-      image: '/api/placeholder/80/80',
+      name: 'Michael Chen',
+      role: 'Marketing Director',
+      company: 'TechFlow Solutions',
+      image: '/Testimonials/pexels-kampus-5920774.jpg',
       rating: 5,
-      text: 'The team\'s creativity and data-driven approach helped us reach new audiences we never thought possible.',
-      results: ['5K+ Monthly Leads', '200% Brand Awareness', '95% Client Satisfaction']
+      text: 'The team\'s expertise in digital marketing helped us achieve unprecedented growth. Their data-driven approach delivered results we never imagined.',
+      results: ['500% Lead Generation', '300% Website Traffic', '95% Conversion Rate']
     },
     {
       id: 6,
-      name: 'Maria Ahmed',
-      role: 'Marketing Head',
-      company: 'Global Solutions',
-      image: '/api/placeholder/80/80',
+      name: 'Emily Rodriguez',
+      role: 'Business Owner',
+      company: 'Local Bistro Chain',
+      image: '/Testimonials/pexels-kooldark-14438785.jpg',
       rating: 5,
-      text: 'Professional, reliable, and results-oriented. Spark Nexora is our go-to digital partner.',
-      results: ['400% ROI', '250% Lead Generation', '100% Project Success']
+      text: 'Working with Spark Nexora was the best business decision we made. They understood our local market and delivered exceptional results.',
+      results: ['350% Local Reach', '200% Customer Retention', '150% Revenue Growth']
     }
   ];
 
@@ -196,6 +196,7 @@ const TestimonialsSection = () => {
 
         {/* Testimonials Carousel */}
         <div className="relative">
+
           <Swiper
             modules={[Pagination, Autoplay]}
             spaceBetween={30}
@@ -206,10 +207,12 @@ const TestimonialsSection = () => {
               el: '.swiper-pagination-custom',
             }}
             autoplay={{
-              delay: 3000,
+              delay: 5000,
               disableOnInteraction: false,
+              pauseOnMouseEnter: true,
             }}
-            speed={1000}
+            speed={800}
+            grabCursor={true}
             breakpoints={{
               640: {
                 slidesPerView: 1,
@@ -228,7 +231,12 @@ const TestimonialsSection = () => {
           >
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={testimonial.id}>
-                <div className="min-h-96 p-8 card-modern flex flex-col">
+                <div className="min-h-96 p-8 card-modern flex flex-col group relative overflow-hidden">
+                  {/* Background Pattern */}
+                  <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full -translate-y-16 translate-x-16"></div>
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-br from-secondary-500 to-primary-500 rounded-full translate-y-12 -translate-x-12"></div>
+                  </div>
                   {/* Rating */}
                   <div className="flex items-center mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
@@ -264,9 +272,16 @@ const TestimonialsSection = () => {
                   </div>
 
                   {/* Client Info */}
-                  <div className="flex items-center mt-auto">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4 flex-shrink-0">
-                      {testimonial.name.split(' ').map(n => n[0]).join('')}
+                  <div className="flex items-center relative z-10">
+                    <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 ring-2 ring-primary-200 group-hover:ring-primary-300 transition-all duration-300 relative">
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                      {/* Image Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="font-semibold text-gray-900 truncate">{testimonial.name}</div>
@@ -370,7 +385,7 @@ const TestimonialsSection = () => {
 
       <style jsx global>{`
         .testimonials-swiper {
-          padding: 20px 0 60px 0;
+          padding: 20px 0 20px 0;
         }
         
         .swiper-pagination-custom {
