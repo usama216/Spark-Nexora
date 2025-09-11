@@ -180,7 +180,7 @@ const ContactSection = () => {
             transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             viewport={{ once: true }}
           >
-            Let's Create Something{' '}
+            Let&apos;s Create Something{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
               Amazing
             </span>
@@ -193,7 +193,7 @@ const ContactSection = () => {
             transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
             viewport={{ once: true }}
           >
-            Ready to take your business to the next level? We're here to help you achieve your digital goals with innovative solutions.
+            Ready to take your business to the next level? We&apos;re here to help you achieve your digital goals with innovative solutions.
           </motion.p>
         </motion.div>
 
@@ -262,7 +262,7 @@ const ContactSection = () => {
                   Send us a <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">Message</span>
                 </h3>
                 <p className="text-gray-600 text-lg">
-                  Fill out the form below and we'll get back to you within 24 hours.
+                  Fill out the form below and we&apos;ll get back to you within 24 hours.
                 </p>
               </motion.div>
               
