@@ -1,31 +1,31 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Toast, { ToastProps } from './Toast';
+import { AnimatePresence } from 'framer-motion';
+import ToastComponent, { Toast } from './Toast';
 
 interface ToastContainerProps {
-  toasts: ToastProps[];
+  toasts: Toast[];
   onRemoveToast: (id: string) => void;
 }
 
 const ToastContainer = ({ toasts, onRemoveToast }: ToastContainerProps) => {
-  if (toasts.length === 0) return null;
-
   return (
-    <motion.div
-      className="fixed top-4 right-4 z-50 space-y-2"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
+    <div
+      aria-live="assertive"
+      className="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start z-50"
     >
-      {toasts.map((toast) => (
-        <Toast
-          key={toast.id}
-          {...toast}
-          onClose={onRemoveToast}
-        />
-      ))}
-    </motion.div>
+      <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
+        <AnimatePresence>
+          {toasts.map((toast) => (
+            <ToastComponent
+              key={toast.id}
+              toast={toast}
+              onRemove={onRemoveToast}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
+    </div>
   );
 };
 

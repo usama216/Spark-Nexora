@@ -2,6 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/useToast';
+import ToastContainer from './ToastContainer';
+import ConfirmationModal from './ConfirmationModal';
 
 interface Contact {
   _id: string;
@@ -47,9 +52,15 @@ const SimpleAdminDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [contactToDelete, setContactToDelete] = useState<Contact | null>(null);
   const [filters, setFilters] = useState({
     status: ''
   });
+  
+  const { user, logout } = useAuth();
+  const router = useRouter();
+  const { toasts, showSuccess, showError, showWarning, removeToast } = useToast();
 
   // Dummy payments data (will be replaced with Payoneer integration)
   const [payments] = useState<Payment[]>([
@@ -124,9 +135,9 @@ const SimpleAdminDashboard = () => {
     }
   ]);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://spark-nexora-backend.vercel.app/apihttp://localhost:5000/api';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://spark-nexora-backend.vercel.app/api';
 
-  // Fetch contacts
+  // Fetch contacts from live backend
   const fetchContacts = async () => {
     try {
       setLoading(true);
@@ -146,7 +157,7 @@ const SimpleAdminDashboard = () => {
     }
   };
 
-  // Update contact status
+  // Update contact status using live backend
   const updateStatus = async (contactId: string, newStatus: string) => {
     try {
       const response = await fetch(`${API_BASE_URL}/contact/${contactId}/status`, {
@@ -163,22 +174,67 @@ const SimpleAdminDashboard = () => {
     }
   };
 
-  // Delete contact
-  const deleteContact = async (contactId: string) => {
-    if (!confirm('Are you sure you want to delete this contact?')) return;
+  // Handle delete confirmation
+  const handleDeleteClick = (contact: Contact) => {
+    setContactToDelete(contact);
+    setShowDeleteModal(true);
+  };
+
+  // Delete contact using live backend
+  const deleteContact = async () => {
+    if (!contactToDelete) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/contact/${contactId}`, {
+      const response = await fetch(`${API_BASE_URL}/contact/${contactToDelete._id}`, {
         method: 'DELETE'
       });
 
       if (response.ok) {
         fetchContacts(); // Refresh the list
+        setShowDeleteModal(false);
+        setContactToDelete(null);
+        showSuccess('Contact Deleted', 'The contact message has been successfully deleted.');
+      } else {
+        showError('Delete Failed', 'Failed to delete contact. Please try again.');
       }
     } catch (err) {
       console.error('Error deleting contact:', err);
+      showError('Delete Failed', 'Failed to delete contact. Please try again.');
     }
   };
+
+  // Cancel delete
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setContactToDelete(null);
+  };
+
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      // Call backend logout if needed
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        await fetch(`${API_BASE_URL}/auth/logout`, { 
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+      }
+      logout();
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still logout locally even if API call fails
+      logout();
+      router.push('/login');
+    }
+  };
+
 
   // Load contacts on mount and when filters change
   useEffect(() => {
@@ -254,25 +310,56 @@ const SimpleAdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+    <>
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
+      <div className="min-h-screen bg-gray-50">
+      {/* Dashboard Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-gray-600">
-                {activeTab === 'contacts' 
-                  ? 'Manage your contact form submissions' 
-                  : 'Track payments and transactions'
-                }
-              </p>
+            <div className="flex items-center">
+              <div className="flex-shrink-0 flex items-center mr-6">
+                <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900">Spark Nexora</h1>
+                  <p className="text-xs text-gray-500">Admin Panel</p>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
+                <p className="text-gray-600">
+                  {activeTab === 'contacts' 
+                    ? 'Manage your contact form submissions' 
+                    : 'Track payments and transactions'
+                  }
+                </p>
+              </div>
             </div>
-            <div className="text-sm text-gray-500">
-              {activeTab === 'contacts' 
-                ? `${contacts.length} message${contacts.length !== 1 ? 's' : ''}`
-                : `${payments.length} payment${payments.length !== 1 ? 's' : ''}`
-              }
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-gray-500">
+                {activeTab === 'contacts' 
+                  ? `${contacts.length} message${contacts.length !== 1 ? 's' : ''}`
+                  : `${payments.length} payment${payments.length !== 1 ? 's' : ''}`
+                }
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="text-sm text-gray-600">
+                  Welcome, <span className="font-medium">{user?.name || 'Admin'}</span>
+                </div>
+                <button
+                  onClick={() => setShowLogoutModal(true)}
+                  className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -423,7 +510,7 @@ const SimpleAdminDashboard = () => {
                       </button>
                       
                       <button
-                        onClick={() => deleteContact(contact._id)}
+                        onClick={() => handleDeleteClick(contact)}
                         className="text-red-600 hover:text-red-800 text-xs px-2 py-1"
                       >
                         Delete
@@ -686,7 +773,67 @@ const SimpleAdminDashboard = () => {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && contactToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full">
+            <div className="p-6">
+              <div className="flex items-center mb-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                  <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">Delete Contact Message</h2>
+                  <p className="text-sm text-gray-600">This action cannot be undone.</p>
+                </div>
+              </div>
+              
+              <div className="mb-6">
+                <p className="text-gray-700 mb-2">
+                  Are you sure you want to delete the message from <strong>{contactToDelete.name}</strong>?
+                </p>
+                <div className="bg-gray-50 rounded-md p-3 text-sm text-gray-600">
+                  <p><strong>Email:</strong> {contactToDelete.email}</p>
+                  <p><strong>Subject:</strong> {contactToDelete.subject}</p>
+                  <p><strong>Service:</strong> {contactToDelete.service}</p>
+                </div>
+              </div>
+              
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={cancelDelete}
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={deleteContact}
+                  className="px-4 py-2 text-sm text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
+                >
+                  Delete Message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleLogout}
+        title="Confirm Logout"
+        message="Are you sure you want to logout? You will need to login again to access the admin dashboard."
+        confirmText="Logout"
+        cancelText="Cancel"
+        type="warning"
+      />
     </div>
+    </>
   );
 };
 

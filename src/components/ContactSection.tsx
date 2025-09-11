@@ -1,9 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useToast } from '@/hooks/useToast';
 import ToastContainer from './ToastContainer';
-import { useState } from 'react';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -102,7 +102,7 @@ const ContactSection = () => {
     const error = validateField(name, value);
     if (error) {
       setErrors(prev => ({ ...prev, [name]: error }));
-      showError(error, '');
+      showError('Validation Error', error);
     } else {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -119,11 +119,11 @@ const ContactSection = () => {
     setTouched(allTouched);
     
     // Validate form
-    if (!validateForm()) {
-      showError('Form Validation Failed', 'Please fix the errors below before submitting.', 6000);
-      setIsSubmitting(false);
-      return;
-    }
+    // if (!validateForm()) {
+    //   showError('Form Validation Failed', 'Please fix the errors below before submitting.');
+    //   setIsSubmitting(false);
+    //   return;
+    // }
     
     setIsSubmitting(true);
     
@@ -142,11 +142,7 @@ const ContactSection = () => {
 
       if (response.ok) {
         // Success
-        showSuccess(
-          'Message Sent Successfully!',
-          'Thank you for your message! We\'ll get back to you within 24 hours.',
-          6000
-        );
+        showSuccess('Message Sent Successfully!', 'Thank you for your message! We\'ll get back to you within 24 hours.');
         setFormData({
           name: '',
           email: '',
@@ -163,19 +159,11 @@ const ContactSection = () => {
       } else {
         // Error
         const errorMessage = result.message || result.errors?.join(', ') || 'Failed to send message';
-        showError(
-          'Failed to Send Message',
-          errorMessage,
-          8000
-        );
+        showError('Failed to Send Message', errorMessage);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      showError(
-        'Connection Error',
-        'Sorry, there was an error sending your message. Please check your internet connection and try again.',
-        8000
-      );
+      showError('Connection Error', 'Sorry, there was an error sending your message. Please check your internet connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -247,7 +235,9 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="relative px-24 py-24 bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden">
+    <>
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
+      <section id="contact" className="relative px-24 py-24 bg-gradient-to-br from-primary-50 via-white to-secondary-50 overflow-hidden">
       {/* Brand Color Background Effects */}
       <div className="absolute inset-0">
         {/* Subtle Pattern */}
@@ -731,9 +721,8 @@ const ContactSection = () => {
         </div>
       </div>
       
-      {/* Toast Notifications */}
-      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
     </section>
+    </>
   );
 };
 
