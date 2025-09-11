@@ -61,7 +61,7 @@ const AdminDashboard = () => {
     search: ''
   });
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://spark-nexora-backend.vercel.app/api';
 
   // Fetch dashboard statistics
   const fetchStats = async () => {
