@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lighthouse": "npx lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html"
+    "lighthouse": "npx lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:full": "concurrently \"npm run dev:backend\" \"npm run dev\"",
+    "install:all": "npm install && cd backend && npm install"
   },
   "dependencies": {
     "framer-motion": "^12.23.12",
@@ -21,6 +24,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "autoprefixer": "^10.0.0",
+    "concurrently": "^9.2.1",
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.0.0",
     "lighthouse": "^11.0.0",

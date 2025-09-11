@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useToast } from '@/hooks/useToast';
+import ToastContainer from './ToastContainer';
 import { useState } from 'react';
 
 const ContactSection = () => {
@@ -8,37 +10,175 @@ const ContactSection = () => {
     name: '',
     email: '',
     phone: '',
+    subject:'',
     company: '',
     service: '',
-    message: ''
+    message: '',
+    budget: '',
+    timeline: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const { toasts, showSuccess, showError, showWarning, removeToast } = useToast();
+
+  // Validation functions
+  const validateField = (name: string, value: string): string => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Name is required';
+        if (value.trim().length < 2) return 'Name must be at least 2 characters';
+        if (value.trim().length > 100) return 'Name cannot exceed 100 characters';
+        return '';
+      
+      case 'email':
+        if (!value.trim()) return 'Email is required';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) return 'Please enter a valid email address';
+        return '';
+      
+      case 'phone':
+        if (value && value.length > 20) return 'Phone number cannot exceed 20 characters';
+        if (value && !/^[\+]?[0-9\s\-\(\)]+$/.test(value)) return 'Please enter a valid phone number';
+        return '';
+      
+      case 'company':
+        if (value && value.length > 100) return 'Company name cannot exceed 100 characters';
+        return '';
+      
+      case 'subject':
+        if (!value.trim()) return 'Subject is required';
+        if (value.trim().length < 5) return 'Subject must be at least 5 characters';
+        if (value.trim().length > 200) return 'Subject cannot exceed 200 characters';
+        return '';
+      
+      case 'message':
+        if (!value.trim()) return 'Message is required';
+        if (value.trim().length < 10) return 'Message must be at least 10 characters';
+        if (value.trim().length > 2000) return 'Message cannot exceed 2000 characters';
+        return '';
+      
+      default:
+        return '';
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
+
+    Object.keys(formData).forEach(field => {
+      const error = validateField(field, formData[field as keyof typeof formData]);
+      if (error) {
+        newErrors[field] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    
+    setTouched(prev => ({ ...prev, [name]: true }));
+    
+    const error = validateField(name, value);
+    if (error) {
+      setErrors(prev => ({ ...prev, [name]: error }));
+      showError(error, '');
+    } else {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Mark all fields as touched
+    const allTouched: Record<string, boolean> = {};
+    Object.keys(formData).forEach(field => {
+      allTouched[field] = true;
+    });
+    setTouched(allTouched);
+    
+    // Validate form
+    if (!validateForm()) {
+      showError('Form Validation Failed', 'Please fix the errors below before submitting.', 6000);
+      setIsSubmitting(false);
+      return;
+    }
+    
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert('Thank you for your message! We\'ll get back to you within 24 hours.');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        service: '',
-        message: ''
+    try {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      
+      const response = await fetch(`${API_BASE_URL}/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    }, 2000);
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Success
+        showSuccess(
+          'Message Sent Successfully!',
+          'Thank you for your message! We\'ll get back to you within 24 hours.',
+          6000
+        );
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          subject: '',
+          message: '',
+          service: 'Other',
+          budget: 'Not sure',
+          timeline: 'Just exploring'
+        });
+        setErrors({});
+        setTouched({});
+      } else {
+        // Error
+        const errorMessage = result.message || result.errors?.join(', ') || 'Failed to send message';
+        showError(
+          'Failed to Send Message',
+          errorMessage,
+          8000
+        );
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      showError(
+        'Connection Error',
+        'Sorry, there was an error sending your message. Please check your internet connection and try again.',
+        8000
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handlePhoneClick = () => {
@@ -280,16 +420,28 @@ const ContactSection = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
+                      onBlur={handleInputBlur}
                       required
-                      className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300"
+                      className={`peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 transition-colors duration-300 ${
+                        errors.name && touched.name 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-gray-300 focus:border-primary-500'
+                      }`}
                       placeholder=" "
                     />
                     <label 
                       htmlFor="name" 
-                      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                      className={`absolute text-sm duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 ${
+                        errors.name && touched.name 
+                          ? 'text-red-500 peer-focus:text-red-500' 
+                          : 'text-gray-500 peer-focus:text-primary-500'
+                      }`}
                     >
                       Full Name *
                     </label>
+                    {errors.name && touched.name && (
+                      <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                    )}
                     <div className="absolute inset-y-0 right-0 flex items-center pr-0">
                       <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -308,16 +460,28 @@ const ContactSection = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
+                      onBlur={handleInputBlur}
                       required
-                      className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300"
+                      className={`peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 transition-colors duration-300 ${
+                        errors.email && touched.email 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-gray-300 focus:border-primary-500'
+                      }`}
                       placeholder=" "
                     />
                     <label 
                       htmlFor="email" 
-                      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                      className={`absolute text-sm duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 ${
+                        errors.email && touched.email 
+                          ? 'text-red-500 peer-focus:text-red-500' 
+                          : 'text-gray-500 peer-focus:text-primary-500'
+                      }`}
                     >
                       Email Address *
                     </label>
+                    {errors.email && touched.email && (
+                      <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                    )}
                     <div className="absolute inset-y-0 right-0 flex items-center pr-0">
                       <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -338,15 +502,27 @@ const ContactSection = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300"
+                      onBlur={handleInputBlur}
+                      className={`peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 transition-colors duration-300 ${
+                        errors.phone && touched.phone 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-gray-300 focus:border-primary-500'
+                      }`}
                       placeholder=" "
                     />
                     <label 
                       htmlFor="phone" 
-                      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                      className={`absolute text-sm duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 ${
+                        errors.phone && touched.phone 
+                          ? 'text-red-500 peer-focus:text-red-500' 
+                          : 'text-gray-500 peer-focus:text-primary-500'
+                      }`}
                     >
                       Phone Number
                     </label>
+                    {errors.phone && touched.phone && (
+                      <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                    )}
                     <div className="absolute inset-y-0 right-0 flex items-center pr-0">
                       <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -365,15 +541,27 @@ const ContactSection = () => {
                       name="company"
                       value={formData.company}
                       onChange={handleInputChange}
-                      className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300"
+                      onBlur={handleInputBlur}
+                      className={`peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 transition-colors duration-300 ${
+                        errors.company && touched.company 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-gray-300 focus:border-primary-500'
+                      }`}
                       placeholder=" "
                     />
                     <label 
                       htmlFor="company" 
-                      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                      className={`absolute text-sm duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 ${
+                        errors.company && touched.company 
+                          ? 'text-red-500 peer-focus:text-red-500' 
+                          : 'text-gray-500 peer-focus:text-primary-500'
+                      }`}
                     >
                       Company Name
                     </label>
+                    {errors.company && touched.company && (
+                      <p className="mt-1 text-sm text-red-600">{errors.company}</p>
+                    )}
                     <div className="absolute inset-y-0 right-0 flex items-center pr-0">
                       <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -457,17 +645,29 @@ const ContactSection = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
+                    onBlur={handleInputBlur}
                     required
                     rows={4}
-                    className="peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-500 transition-colors duration-300 resize-none"
+                    className={`peer w-full px-0 pt-6 pb-2 text-gray-900 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 transition-colors duration-300 resize-none ${
+                      errors.message && touched.message 
+                        ? 'border-red-500 focus:border-red-500' 
+                        : 'border-gray-300 focus:border-primary-500'
+                    }`}
                     placeholder=" "
                   />
                   <label 
                     htmlFor="message" 
-                    className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-focus:text-primary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                    className={`absolute text-sm duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-0 peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 ${
+                      errors.message && touched.message 
+                        ? 'text-red-500 peer-focus:text-red-500' 
+                        : 'text-gray-500 peer-focus:text-primary-500'
+                    }`}
                   >
                     Tell us about your project *
                   </label>
+                  {errors.message && touched.message && (
+                    <p className="mt-1 text-sm text-red-600">{errors.message}</p>
+                  )}
                   <div className="absolute top-4 right-0">
                     <svg className="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -530,6 +730,9 @@ const ContactSection = () => {
           </motion.div>
         </div>
       </div>
+      
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
     </section>
   );
 };
