@@ -48,7 +48,7 @@ const HeroSection = () => {
           className="absolute inset-0 overflow-hidden"
           initial={{ opacity: 0, scale: 1.1, rotate: 1 }}
           animate={{ 
-            opacity: 0.9, 
+            opacity: 0.6, 
             scale: 1,
             rotate: 0
           }}
@@ -66,9 +66,9 @@ const HeroSection = () => {
           />
           
           {/* Dynamic Overlay Effects */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/50 via-primary-800/30 to-primary-900/60"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-600/15 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/30 via-primary-800/20 to-primary-900/35"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-600/10 to-transparent"></div>
           
           {/* Animated Light Rays */}
           <motion.div 
@@ -173,7 +173,7 @@ const HeroSection = () => {
         </motion.div>
         
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/80 via-primary-800/70 to-primary-900/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/50 via-primary-800/40 to-primary-900/50"></div>
         
         
         {/* Geometric Elements */}
