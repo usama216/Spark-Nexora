@@ -157,7 +157,7 @@ const AboutSection = () => {
               transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
               viewport={{ once: true }}
             >
-              At Spark Nexora, we believe digital marketing is more than ads and algorithms—it&apos;s about 
+              At Spark Nexora, we believe digital marketing is more than ads and algorithms, it&apos;s about 
               meaningful connections. Founded with a passion for creativity and technology, our team 
               blends data-driven strategies with compelling storytelling to help brands shine online.
             </motion.p>
@@ -168,7 +168,7 @@ const AboutSection = () => {
               transition={{ duration: 1, delay: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
               viewport={{ once: true }}
             >
-              We specialize in helping businesses not only grow—but thrive. Every campaign we design 
+              We specialize in helping businesses not only grow but thrive. Every campaign we design 
               is tailored to your unique audience, industry, and goals. With innovation at the core, 
               we make sure your brand never gets lost in the digital noise.
             </motion.p>
