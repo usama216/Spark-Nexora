@@ -74,10 +74,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (response.ok) {
         const data = await response.json();
         console.log('Login successful, response data:', data);
-        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('authToken', data.data.token);
         
         // Set user with data from response or fallback
-        const userData = data.user || {
+        const userData = data.data.user || {
           id: 'admin',
           email: email,
           name: 'Admin User'

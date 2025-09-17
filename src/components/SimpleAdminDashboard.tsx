@@ -30,19 +30,24 @@ interface Contact {
 }
 
 interface Payment {
-  id: string;
-  clientName: string;
-  clientEmail: string;
+  _id: string;
+  customerName: string;
+  customerEmail: string;
   packageName: string;
-  amount: number;
-  currency: string;
-  status: 'pending' | 'completed' | 'failed' | 'refunded';
-  paymentMethod: 'payoneer' | 'stripe' | 'paypal' | 'bank_transfer';
-  transactionId: string;
-  payoneerReference?: string;
+  packagePrice: number;
+  status: 'succeeded' | 'pending' | 'failed' | 'canceled';
+  paymentIntentId: string;
+  sessionId: string;
+  chargeId?: string;
   createdAt: string;
-  completedAt?: string;
-  notes?: string;
+  paidAt?: string;
+  order?: {
+    _id: string;
+    orderNumber: string;
+    status: string;
+    serviceStartDate?: string;
+    serviceEndDate?: string;
+  };
 }
 
 const SimpleAdminDashboard = () => {
@@ -54,6 +59,8 @@ const SimpleAdminDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [contactToDelete, setContactToDelete] = useState<Contact | null>(null);
+  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [filters, setFilters] = useState({
     status: ''
   });
@@ -62,80 +69,87 @@ const SimpleAdminDashboard = () => {
   const router = useRouter();
   const { toasts, showSuccess, showError, showWarning, removeToast } = useToast();
 
-  // Dummy payments data (will be replaced with Payoneer integration)
-  const [payments] = useState<Payment[]>([
-    {
-      id: '1',
-      clientName: 'John Smith',
-      clientEmail: 'john@example.com',
-      packageName: 'Premium Digital Marketing Package',
-      amount: 2500,
-      currency: 'USD',
-      status: 'completed',
-      paymentMethod: 'payoneer',
-      transactionId: 'PAY-123456789',
-      payoneerReference: 'PYN-987654321',
-      createdAt: '2024-01-15T10:30:00Z',
-      completedAt: '2024-01-15T10:35:00Z',
-      notes: 'Payment received successfully'
+  // Real payments data from backend
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [paymentsLoading, setPaymentsLoading] = useState(false);
+  const [paymentsError, setPaymentsError] = useState<string | null>(null);
+  const [paymentStats, setPaymentStats] = useState({
+    totalRevenue: 0,
+    statusCounts: {
+      succeeded: 0,
+      pending: 0,
+      failed: 0,
+      canceled: 0
     },
-    {
-      id: '2',
-      clientName: 'Sarah Johnson',
-      clientEmail: 'sarah@company.com',
-      packageName: 'Basic Web Design Package',
-      amount: 1200,
-      currency: 'USD',
-      status: 'completed',
-      paymentMethod: 'payoneer',
-      transactionId: 'PAY-123456790',
-      payoneerReference: 'PYN-987654322',
-      createdAt: '2024-01-14T14:20:00Z',
-      completedAt: '2024-01-14T14:25:00Z'
-    },
-    {
-      id: '3',
-      clientName: 'Mike Wilson',
-      clientEmail: 'mike@startup.io',
-      packageName: 'SEO Optimization Package',
-      amount: 1800,
-      currency: 'USD',
-      status: 'pending',
-      paymentMethod: 'payoneer',
-      transactionId: 'PAY-123456791',
-      createdAt: '2024-01-16T09:15:00Z',
-      notes: 'Awaiting payment confirmation'
-    },
-    {
-      id: '4',
-      clientName: 'Emily Davis',
-      clientEmail: 'emily@business.com',
-      packageName: 'Complete Brand Development',
-      amount: 5000,
-      currency: 'USD',
-      status: 'completed',
-      paymentMethod: 'payoneer',
-      transactionId: 'PAY-123456792',
-      payoneerReference: 'PYN-987654323',
-      createdAt: '2024-01-13T16:45:00Z',
-      completedAt: '2024-01-13T16:50:00Z'
-    },
-    {
-      id: '5',
-      clientName: 'David Brown',
-      clientEmail: 'david@agency.net',
-      packageName: 'Social Media Management',
-      amount: 800,
-      currency: 'USD',
-      status: 'failed',
-      paymentMethod: 'payoneer',
-      transactionId: 'PAY-123456793',
-      createdAt: '2024-01-12T11:30:00Z',
-      notes: 'Payment failed - insufficient funds'
-    }
-  ]);
+    recentPayments: 0
+  });
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://spark-nexora-backend.vercel.app/api';
+
+  // Fetch payments from backend
+  const fetchPayments = async () => {
+    setPaymentsLoading(true);
+    setPaymentsError(null);
+    
+    try {
+      const token = localStorage.getItem('authToken');
+      console.log('🔑 Auth Token:', token ? 'Present' : 'Missing');
+      console.log('🌐 API URL:', API_BASE_URL);
+      
+      if (!token) {
+        throw new Error('No authentication token found. Please log in first.');
+      }
+      
+      const response = await fetch(`${API_BASE_URL}/admin/payments`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch payments');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setPayments(data.data.payments);
+      } else {
+        throw new Error(data.message || 'Failed to fetch payments');
+      }
+    } catch (error) {
+      console.error('Error fetching payments:', error);
+      setPaymentsError(error instanceof Error ? error.message : 'Failed to fetch payments');
+    } finally {
+      setPaymentsLoading(false);
+    }
+  };
+
+  // Fetch payment statistics
+  const fetchPaymentStats = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      const response = await fetch(`${API_BASE_URL}/admin/payments/stats`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch payment stats');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setPaymentStats(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching payment stats:', error);
+    }
+  };
 
   // Fetch contacts from live backend
   const fetchContacts = async () => {
@@ -241,6 +255,14 @@ const SimpleAdminDashboard = () => {
     fetchContacts();
   }, [filters]);
 
+  // Fetch payments when payments tab is active
+  useEffect(() => {
+    if (activeTab === 'payments') {
+      fetchPayments();
+      fetchPaymentStats();
+    }
+  }, [activeTab]);
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'new': return 'bg-blue-100 text-blue-800';
@@ -273,10 +295,10 @@ const SimpleAdminDashboard = () => {
 
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-green-100 text-green-800';
+      case 'succeeded': return 'bg-green-100 text-green-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
       case 'failed': return 'bg-red-100 text-red-800';
-      case 'refunded': return 'bg-gray-100 text-gray-800';
+      case 'canceled': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -527,81 +549,46 @@ const SimpleAdminDashboard = () => {
         {/* Payments Tab Content */}
         {activeTab === 'payments' && (
           <div className="space-y-6">
-            {/* Payment Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="bg-white rounded-lg shadow-sm border p-6">
+            {/* Total Revenue Card */}
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <div className="flex items-center justify-center">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <span className="text-green-600 text-sm">💰</span>
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                      <span className="text-green-600 text-xl">💰</span>
                     </div>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Total Revenue</p>
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {formatCurrency(
-                        payments
-                          .filter(p => p.status === 'completed')
-                          .reduce((sum, p) => sum + p.amount, 0),
-                        'USD'
-                      )}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-sm border p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      <span className="text-blue-600 text-sm">✅</span>
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Completed</p>
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {payments.filter(p => p.status === 'completed').length}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-sm border p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                      <span className="text-yellow-600 text-sm">⏳</span>
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Pending</p>
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {payments.filter(p => p.status === 'pending').length}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow-sm border p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                      <span className="text-red-600 text-sm">❌</span>
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Failed</p>
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {payments.filter(p => p.status === 'failed').length}
+                    <p className="text-lg font-medium text-gray-500">Total Revenue</p>
+                    <p className="text-3xl font-bold text-gray-900">
+                      {formatCurrency(paymentStats.totalRevenue, 'USD')}
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
+
             {/* Payments List */}
             <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-              {payments.length === 0 ? (
+              {paymentsLoading ? (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading payments...</p>
+                </div>
+              ) : paymentsError ? (
+                <div className="text-center py-12">
+                  <div className="text-red-400 text-4xl mb-4">⚠️</div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Error Loading Payments</h3>
+                  <p className="text-gray-500">{paymentsError}</p>
+                  <button
+                    onClick={fetchPayments}
+                    className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              ) : payments.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="text-gray-400 text-4xl mb-4">💳</div>
                   <h3 className="text-lg font-medium text-gray-900 mb-2">No payments found</h3>
@@ -611,7 +598,7 @@ const SimpleAdminDashboard = () => {
                 <div className="divide-y divide-gray-200">
                   {payments.map((payment, index) => (
                     <motion.div
-                      key={payment.id}
+                      key={payment._id}
                       className="p-6 hover:bg-gray-50 transition-colors"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -621,44 +608,45 @@ const SimpleAdminDashboard = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center space-x-3 mb-2">
                             <h3 className="text-lg font-medium text-gray-900 truncate">
-                              {payment.clientName}
+                              {payment.customerName}
                             </h3>
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getPaymentStatusColor(payment.status)}`}>
                               {payment.status}
                             </span>
-                            <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
-                              {getPaymentMethodIcon(payment.paymentMethod)} {payment.paymentMethod}
-                            </span>
+                          
+                            {payment.order && (
+                              <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded-full">
+                                Order: {payment.order.orderNumber}
+                              </span>
+                            )}
                           </div>
                           
                           <div className="text-sm text-gray-600 mb-2">
-                            <p><strong>Email:</strong> {payment.clientEmail}</p>
+                            <p><strong>Email:</strong> {payment.customerEmail}</p>
                             <p><strong>Package:</strong> {payment.packageName}</p>
-                            {/* <p><strong>Transaction ID:</strong> {payment.transactionId}</p>
-                            {payment.payoneerReference && (
-                              <p><strong>Payoneer Ref:</strong> {payment.payoneerReference}</p>
-                            )} */}
                           </div>
                           
                           <div className="text-sm text-gray-700 mb-2">
                             <p className="text-lg font-semibold text-green-600">
-                              {formatCurrency(payment.amount, payment.currency)}
+                              {formatCurrency(payment.packagePrice, 'USD')}
                             </p>
                           </div>
                           
                           <div className="text-xs text-gray-500">
                             <p>Created: {formatDate(payment.createdAt)}</p>
-                            {payment.completedAt && (
-                              <p>Completed: {formatDate(payment.completedAt)}</p>
+                            {payment.paidAt && (
+                              <p>Completed: {formatDate(payment.paidAt)}</p>
                             )}
-                            {payment.notes && (
-                              <p className="mt-1 text-orange-600">Note: {payment.notes}</p>
-                            )}
+                           
                           </div>
                         </div>
                         
                         <div className="flex items-center space-x-2 ml-4">
                           <button
+                            onClick={() => {
+                              setSelectedPayment(payment);
+                              setShowPaymentModal(true);
+                            }}
                             className="text-primary-600 hover:text-primary-800 text-xs px-3 py-1 border border-primary-300 rounded hover:bg-primary-50"
                           >
                             View Details
@@ -832,6 +820,121 @@ const SimpleAdminDashboard = () => {
         cancelText="Cancel"
         type="warning"
       />
+
+      {/* Payment Details Modal */}
+      {showPaymentModal && selectedPayment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Payment Details</h2>
+                <button
+                  onClick={() => setShowPaymentModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              <div className="space-y-6">
+                {/* Payment Status */}
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Payment Status</h3>
+                    <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getPaymentStatusColor(selectedPayment.status)}`}>
+                      {selectedPayment.status.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-green-600">
+                      {formatCurrency(selectedPayment.packagePrice, 'USD')}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Customer Information */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Customer Information</h3>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Name</label>
+                        <p className="text-gray-900">{selectedPayment.customerName}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Email</label>
+                        <p className="text-gray-900">{selectedPayment.customerEmail}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Package</label>
+                        <p className="text-gray-900">{selectedPayment.packageName}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Information</h3>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Amount</label>
+                        <p className="text-gray-900 font-semibold text-lg text-green-600">
+                          {formatCurrency(selectedPayment.packagePrice, 'USD')}
+                        </p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Payment Method</label>
+                        <p className="text-gray-900">Stripe</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Status</label>
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getPaymentStatusColor(selectedPayment.status)}`}>
+                          {selectedPayment.status.toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Order Information */}
+                {selectedPayment.order && (
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Information</h3>
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-sm font-medium text-gray-500">Order Number</label>
+                          <p className="text-gray-900 font-semibold">{selectedPayment.order.orderNumber}</p>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-gray-500">Order Status</label>
+                          <p className="text-gray-900">{selectedPayment.order.status}</p>
+                        </div>
+                        {selectedPayment.order.serviceStartDate && (
+                          <div>
+                            <label className="text-sm font-medium text-gray-500">Service Start Date</label>
+                            <p className="text-gray-900">{formatDate(selectedPayment.order.serviceStartDate)}</p>
+                          </div>
+                        )}
+                        {selectedPayment.order.serviceEndDate && (
+                          <div>
+                            <label className="text-sm font-medium text-gray-500">Service End Date</label>
+                            <p className="text-gray-900">{formatDate(selectedPayment.order.serviceEndDate)}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+              
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      )}
     </div>
     </>
   );

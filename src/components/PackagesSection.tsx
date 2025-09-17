@@ -2,9 +2,16 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import PaymentModal from './PaymentModal';
 
 const PackagesSection = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<{
+    name: string;
+    price: number;
+    description: string;
+  } | null>(null);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   
   const packages = [
     {
@@ -85,11 +92,28 @@ const PackagesSection = () => {
     }
   ];
 
-  const scrollToContact = () => {
-    const element = document.getElementById('contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handlePackageSelect = (pkg: any) => {
+    if (pkg.name === 'Custom Power Plan') {
+      // For custom plans, scroll to contact
+      const element = document.getElementById('contact');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // For regular packages, open payment modal
+      const packagePrice = parseFloat(pkg.price.replace('$', ''));
+      setSelectedPackage({
+        name: pkg.name,
+        price: packagePrice,
+        description: pkg.description
+      });
+      setIsPaymentModalOpen(true);
     }
+  };
+
+  const closePaymentModal = () => {
+    setIsPaymentModalOpen(false);
+    setSelectedPackage(null);
   };
 
   return (
@@ -292,7 +316,7 @@ const PackagesSection = () => {
 
                   {/* CTA Button */}
                   <motion.button
-                    onClick={scrollToContact}
+                    onClick={() => handlePackageSelect(pkg)}
                     className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 relative overflow-hidden mt-auto ${
                       pkg.popular
                         ? 'bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700'
@@ -348,7 +372,12 @@ const PackagesSection = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
-                onClick={scrollToContact}
+                onClick={() => {
+                  const element = document.getElementById('contact');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -372,6 +401,15 @@ const PackagesSection = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Payment Modal */}
+      {selectedPackage && (
+        <PaymentModal
+          isOpen={isPaymentModalOpen}
+          onClose={closePaymentModal}
+          packageData={selectedPackage}
+        />
+      )}
     </section>
   );
 };
