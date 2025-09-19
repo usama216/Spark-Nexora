@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const ServicesSection = () => {
   const services = [
@@ -179,9 +180,10 @@ const ServicesSection = () => {
               >
                 {/* Hero Image Section */}
                 <div className="relative h-48 lg:h-56 overflow-hidden">
-                  <img
+                  <Image
                     src={service.image}
                     alt={service.title}
+                    fill
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                     loading="lazy"
                     onError={(e) => {

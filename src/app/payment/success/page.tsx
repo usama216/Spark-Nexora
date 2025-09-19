@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
@@ -30,7 +30,7 @@ interface PaymentData {
   };
 }
 
-const PaymentSuccessPage = () => {
+const PaymentSuccessContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
@@ -209,7 +209,7 @@ const PaymentSuccessPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">What's Next?</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">What&apos;s Next?</h3>
           <ul className="space-y-2 text-gray-700">
             <li className="flex items-start">
               <svg className="w-5 h-5 text-primary-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -254,6 +254,21 @@ const PaymentSuccessPage = () => {
         </motion.div>
       </motion.div>
     </div>
+  );
+};
+
+const PaymentSuccessPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading payment details...</p>
+        </div>
+      </div>
+    }>
+      <PaymentSuccessContent />
+    </Suspense>
   );
 };
 

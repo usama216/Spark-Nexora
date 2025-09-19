@@ -208,14 +208,14 @@ const AdminDashboard = () => {
     };
 
     loadData();
-  }, []);
+  }, [fetchStats, fetchContacts, fetchRecentContacts]);
 
   // Refetch contacts when filters change
   useEffect(() => {
     if (!loading) {
       fetchContacts(1);
     }
-  }, [filters]);
+  }, [filters, fetchContacts, loading]);
 
   if (loading) {
     return (

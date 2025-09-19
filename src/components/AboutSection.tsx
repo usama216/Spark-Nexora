@@ -174,6 +174,7 @@ const AboutSection = () => {
             </motion.p>
           </motion.div>
 
+
           {/* Right Content - Stats */}
           <motion.div
             className="grid grid-cols-2 gap-8"

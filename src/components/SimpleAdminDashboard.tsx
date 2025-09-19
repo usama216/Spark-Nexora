@@ -253,7 +253,7 @@ const SimpleAdminDashboard = () => {
   // Load contacts on mount and when filters change
   useEffect(() => {
     fetchContacts();
-  }, [filters]);
+  }, [filters, fetchContacts]);
 
   // Fetch payments when payments tab is active
   useEffect(() => {
@@ -261,7 +261,7 @@ const SimpleAdminDashboard = () => {
       fetchPayments();
       fetchPaymentStats();
     }
-  }, [activeTab]);
+  }, [activeTab, fetchPayments, fetchPaymentStats]);
 
   const getStatusColor = (status: string) => {
     switch (status) {

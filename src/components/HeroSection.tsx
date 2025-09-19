@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const HeroSection = () => {
   const scrollToContact = () => {
@@ -58,10 +59,11 @@ const HeroSection = () => {
             scale: { duration: 4, ease: "easeOut" }
           }}
         >
-          <img
+          <Image
             src="/Home/pexels-souvenirpixels-1519088.jpg"
             alt="Modern Business Background"
-            className="w-full h-full object-cover object-center"
+            fill
+            className="object-cover object-center"
             loading="eager"
           />
           

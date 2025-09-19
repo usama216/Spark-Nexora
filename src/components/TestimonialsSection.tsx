@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
+import Image from 'next/image';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -274,9 +275,10 @@ const TestimonialsSection = () => {
                   {/* Client Info */}
                   <div className="flex items-center relative z-10">
                     <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 ring-2 ring-primary-200 group-hover:ring-primary-300 transition-all duration-300 relative">
-                      <img
+                      <Image
                         src={testimonial.image}
                         alt={testimonial.name}
+                        fill
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         loading="lazy"
                       />

@@ -45,7 +45,7 @@ const PaymentCancelPage = () => {
             transition={{ delay: 0.4 }}
           >
             Your payment was cancelled. No charges have been made to your account. 
-            If you have any questions or need assistance, please don't hesitate to contact us.
+            If you have any questions or need assistance, please don&apos;t hesitate to contact us.
           </motion.p>
 
           {/* Info Box */}

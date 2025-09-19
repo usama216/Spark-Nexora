@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Image from 'next/image';
 
 const PortfolioSection = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -223,10 +224,11 @@ const PortfolioSection = () => {
                   >
                     {/* Portfolio Image */}
                     <div className="relative w-full h-full">
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
                         loading="lazy"
                       />
                       {/* Overlay Gradient */}
