@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -87,7 +87,7 @@ const SimpleAdminDashboard = () => {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://spark-nexora-backend.vercel.app/api';
 
   // Fetch payments from backend
-  const fetchPayments = async () => {
+  const fetchPayments = useCallback(async () => {
     setPaymentsLoading(true);
     setPaymentsError(null);
     
@@ -124,10 +124,10 @@ const SimpleAdminDashboard = () => {
     } finally {
       setPaymentsLoading(false);
     }
-  };
+  }, [API_BASE_URL]);
 
   // Fetch payment statistics
-  const fetchPaymentStats = async () => {
+  const fetchPaymentStats = useCallback(async () => {
     try {
       const token = localStorage.getItem('authToken');
       const response = await fetch(`${API_BASE_URL}/admin/payments/stats`, {
@@ -149,10 +149,10 @@ const SimpleAdminDashboard = () => {
     } catch (error) {
       console.error('Error fetching payment stats:', error);
     }
-  };
+  }, [API_BASE_URL]);
 
   // Fetch contacts from live backend
-  const fetchContacts = async () => {
+  const fetchContacts = useCallback(async () => {
     try {
       setLoading(true);
       const queryParams = new URLSearchParams();
@@ -169,7 +169,7 @@ const SimpleAdminDashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_BASE_URL, filters.status]);
 
   // Update contact status using live backend
   const updateStatus = async (contactId: string, newStatus: string) => {

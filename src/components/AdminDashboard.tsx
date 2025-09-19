@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import DashboardHeader from './admin/DashboardHeader';
 import StatsOverview from './admin/StatsOverview';
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://spark-nexora-backend.vercel.app/api';
 
   // Fetch dashboard statistics
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/admin/dashboard`);
       if (!response.ok) throw new Error('Failed to fetch stats');
@@ -74,10 +74,10 @@ const AdminDashboard = () => {
       console.error('Error fetching stats:', err);
       setError('Failed to load dashboard statistics');
     }
-  };
+  }, [API_BASE_URL]);
 
   // Fetch contacts with pagination and filters
-  const fetchContacts = async (page = 1) => {
+  const fetchContacts = useCallback(async (page = 1) => {
     try {
       const queryParams = new URLSearchParams({
         page: page.toString(),
@@ -96,10 +96,10 @@ const AdminDashboard = () => {
       console.error('Error fetching contacts:', err);
       setError('Failed to load contacts');
     }
-  };
+  }, [API_BASE_URL, filters]);
 
   // Fetch recent contacts
-  const fetchRecentContacts = async () => {
+  const fetchRecentContacts = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/admin/recent?limit=5`);
       if (!response.ok) throw new Error('Failed to fetch recent contacts');
@@ -108,7 +108,7 @@ const AdminDashboard = () => {
     } catch (err) {
       console.error('Error fetching recent contacts:', err);
     }
-  };
+  }, [API_BASE_URL]);
 
   // Update contact status
   const updateContactStatus = async (contactId: string, status: string, priority?: string) => {
