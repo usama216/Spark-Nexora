@@ -181,7 +181,7 @@ const ContactSection = () => {
   };
 
   const handleLocationClick = () => {
-    const address = 'Street 11, Phase AGOCHS, Islamabad, Pakistan';
+    const address = 'Office 14691 182-184 High Street North East Ham London E6 2JA';
     const encodedAddress = encodeURIComponent(address);
     window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
   };
@@ -195,7 +195,7 @@ const ContactSection = () => {
         </svg>
       ),
       title: 'Office Address',
-      details: 'Street 11, Phase AGOCHS, Islamabad, Pakistan',
+      details: 'Office 14691 182-184 High Street North East Ham London E6 2JA',
       action: 'Get Directions',
       onClick: handleLocationClick
     },
