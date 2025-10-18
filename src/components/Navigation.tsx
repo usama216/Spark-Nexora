@@ -64,6 +64,7 @@ const Navigation = () => {
                 width={48}
                 height={48}
                 className="w-full h-full object-contain"
+                loading="eager"
               />
             </div>
             <div>

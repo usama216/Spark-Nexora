@@ -229,7 +229,7 @@ const PortfolioSection = () => {
                         alt={item.title}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        loading="lazy"
+                        loading="eager"
                       />
                       {/* Overlay Gradient */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

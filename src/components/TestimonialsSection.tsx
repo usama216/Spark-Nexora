@@ -280,7 +280,7 @@ const TestimonialsSection = () => {
                         alt={testimonial.name}
                         fill
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                        loading="lazy"
+                        loading="eager"
                       />
                       {/* Image Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

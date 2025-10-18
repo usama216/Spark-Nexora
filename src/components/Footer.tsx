@@ -30,6 +30,7 @@ const Footer = () => {
                 width={32}
                 height={32}
                 className="h-16 w-16"
+                loading="eager"
               />
               <span className="text-2xl font-bold gradient-text">
                 Spark Nexora
