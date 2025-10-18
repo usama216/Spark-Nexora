@@ -128,7 +128,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
     
     try {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://spark-nexora-backend.vercel.app/api';
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.sparknexora.com/api';
       
       const response = await fetch(`${API_BASE_URL}/contact`, {
         method: 'POST',

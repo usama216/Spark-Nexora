@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
       setIsLoading(true);
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://spark-nexora-backend.vercel.app/api';
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sparknexora.com/api';
       const response = await fetch(`${backendUrl}/auth/login`, {
         method: 'POST',
         headers: {
