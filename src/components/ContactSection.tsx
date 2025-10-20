@@ -170,7 +170,7 @@ const ContactSection = () => {
   };
 
   const handlePhoneClick = () => {
-    window.open('tel:+923084577766', '_self');
+    window.open('tel:+441223910816', '_self');
   };
 
   const handleEmailClick = () => {
@@ -206,7 +206,7 @@ const ContactSection = () => {
         </svg>
       ),
       title: 'Phone Number',
-      details: '+92 308 4577766',
+      details: '+44 1223 910 816',
       action: 'Call Now',
       onClick: handlePhoneClick
     },
