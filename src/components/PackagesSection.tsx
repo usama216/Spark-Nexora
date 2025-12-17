@@ -16,7 +16,7 @@ const PackagesSection = () => {
   const packages = [
     {
       name: "Starter Spark",
-      price: "$199",
+      price: "$1",
       period: "mo",
       description: "Perfect for Small Businesses & Startups",
       features: [
@@ -35,7 +35,7 @@ const PackagesSection = () => {
     },
     {
       name: "Growth Ignite",
-      price: "$499",
+      price: "$",
       period: "mo",
       description: "For Growing Brands Ready to Scale",
       features: [
@@ -54,7 +54,7 @@ const PackagesSection = () => {
     },
     {
       name: "Premium Blaze",
-      price: "$999",
+      price: "$1",
       period: "mo",
       description: "For Businesses Who Want to Dominate",
       features: [
