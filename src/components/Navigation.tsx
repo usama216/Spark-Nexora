@@ -2,14 +2,39 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const scrollToSection = (sectionId: string) => {
     // Close mobile menu first
     setIsMenuOpen(false);
+    
+    // If we're not on the homepage, navigate to homepage first
+    if (pathname !== '/') {
+      // Navigate to homepage without hash first
+      router.push('/');
+      // Wait for page to load, then scroll to section
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const navbar = document.querySelector('nav');
+          const navbarHeight = navbar ? navbar.offsetHeight : 0;
+          const elementPosition = element.offsetTop - navbarHeight - 20;
+          window.scrollTo({
+            top: elementPosition,
+            behavior: 'smooth'
+          });
+          // Update URL hash after scroll
+          window.history.replaceState(null, '', `#${sectionId}`);
+        }
+      }, 300); // Increased timeout to ensure page is loaded
+      return;
+    }
     
     // Small delay to ensure menu closes before scrolling
     setTimeout(() => {
@@ -26,6 +51,8 @@ const Navigation = () => {
           top: elementPosition,
           behavior: 'smooth'
         });
+        // Update URL hash after scroll
+        window.history.replaceState(null, '', `#${sectionId}`);
       }
     }, 100);
   };
@@ -52,7 +79,13 @@ const Navigation = () => {
           {/* Logo */}
           <motion.button 
             className="flex items-center space-x-3 cursor-pointer"
-            onClick={() => scrollToSection('home')}
+            onClick={() => {
+              if (pathname === '/') {
+                scrollToSection('home');
+              } else {
+                router.push('/');
+              }
+            }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}

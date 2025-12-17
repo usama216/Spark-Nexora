@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Navigation from './Navigation';
 import Footer from './Footer';
+import HashScrollHandler from './HashScrollHandler';
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
   // For all other routes, show navbar and footer
   return (
     <>
+      <HashScrollHandler />
       <Navigation />
       <main>{children}</main>
       <Footer />

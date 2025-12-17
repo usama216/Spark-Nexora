@@ -1,9 +1,26 @@
 'use client';
 
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Footer = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+
   const scrollToSection = (sectionId: string) => {
+    // If we're not on the homepage, navigate to homepage first
+    if (pathname !== '/') {
+      router.push('/');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return;
+    }
+    
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -11,6 +28,13 @@ const Footer = () => {
   };
 
   const scrollToTop = () => {
+    if (pathname !== '/') {
+      router.push('/');
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+      return;
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -141,12 +165,30 @@ E6 2JA
               © 2025 Spark Nexora. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300 text-sm">
+              <Link 
+                href="/privacy-policy" 
+                onClick={() => {
+                  // Clear any hash from URL before navigating
+                  if (window.location.hash) {
+                    window.history.replaceState(null, '', window.location.pathname);
+                  }
+                }}
+                className="text-gray-400 hover:text-white transition-colors duration-300 text-sm"
+              >
                 Privacy Policy
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300 text-sm">
-                Terms of Service
-              </a>
+              </Link>
+              <Link 
+                href="/refund-policy"
+                onClick={() => {
+                  // Clear any hash from URL before navigating
+                  if (window.location.hash) {
+                    window.history.replaceState(null, '', window.location.pathname);
+                  }
+                }}
+                className="text-gray-400 hover:text-white transition-colors duration-300 text-sm"
+              >
+                Refund Policy
+              </Link>
             </div>
           </div>
         </div>
