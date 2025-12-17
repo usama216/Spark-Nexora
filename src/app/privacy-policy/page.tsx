@@ -185,7 +185,7 @@ export default function PrivacyPolicyPage() {
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
                 <li>Digital products and services are generally non-refundable once accessed or delivered</li>
                 <li>Subscription cancellations take effect at the end of the current billing cycle</li>
-                <li>Refund exceptions may be granted at Spark Nexora's discretion</li>
+                <li>Refund exceptions may be granted at Spark Nexora&apos;s discretion</li>
               </ul>
             </section>
 

@@ -45,7 +45,7 @@ export default function RefundPolicyPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. Eligible Refund Scenarios</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                A refund may be granted at Spark Nexora's discretion if:
+                A refund may be granted at Spark Nexora&apos;s discretion if:
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
                 <li>The service was not delivered as promised due to a verified technical or operational failure on our end</li>
