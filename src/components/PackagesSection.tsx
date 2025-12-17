@@ -35,7 +35,7 @@ const PackagesSection = () => {
     },
     {
       name: "Growth Ignite",
-      price: "$",
+      price: "$1",
       period: "mo",
       description: "For Growing Brands Ready to Scale",
       features: [
